@@ -12,6 +12,8 @@ import WeatherButton from './component/WeatherButton';
 // 6. 데이터를 들고오는 동안 로딩 스피너가 돈다.
 function App() {
   const [weather, setWeather] = useState(null);
+  const [city, setCity] = useState('');
+  const cities = ['paris', 'dublin', 'seoul', 'oxford'];
   // 배열에 값을 안주면 렌더 후에 바로 실행
   const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -29,14 +31,28 @@ function App() {
     setWeather(data);
   };
 
+  //시티별로 데이터 가져오기
+  const getWeatherByCity = async () => {
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=861351e4b65eb1adfebe021f96f31ff3&units=metric`;
+    let response = await fetch(url);
+    let data = await response.json();
+    setWeather(data);
+    console.log('Data', data);
+  };
+
   useEffect(() => {
-    getCurrentLocation();
-  }, []);
+    if (city == '') {
+      getCurrentLocation();
+    } else {
+      getWeatherByCity();
+    }
+  }, [city]);
+
   return (
     <div>
       <div className="container">
         <WeatherBox weather={weather} />
-        <WeatherButton />
+        <WeatherButton cities={cities} setCity={setCity} />
       </div>
     </div>
   );
