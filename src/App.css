@@ -1,11 +1,12 @@
 body {
-  background: url(https://media.gettyimages.com/id/159238715/vector/wheater-icon-set.jpg?s=1024x1024&w=gi&k=20&c=KKySVxpU5sqrSsYRTyCJhsaOpBk7sJIYpZC9QvkYSt0=);
+  background: url(https://img.freepik.com/free-photo/grunge-black-concrete-textured-background_53876-124541.jpg);
   /* 화면 높이의 100프로 */
   height: 100vh;
   /* 백그라운드 반복 안되게 하기 */
   background-repeat: no-repeat;
   /* 비어있는 부분 채우게 */
   background-size: cover;
+  /* background-color: rgb(48, 47, 47); */
 }
 
 .container {
@@ -24,10 +25,62 @@ body {
   border: 3px solid white;
   /* 안에 공간 주는거 */
   padding: 50px;
-  border-radius: 30px;
-  background-color: blue;
+  /* border-radius: 30px; */
+  background-color: white;
+  width: 750px;
 }
 
-.menu-container {
-  background-color: blue;
+.weather-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.info-box {
+  display: flex;
+  flex-direction: row;
+}
+
+.item-img {
+  padding-top: 12px;
+}
+
+.tem-cfb {
+  display: flex;
+  flex-direction: row;
+}
+
+.tem-cf {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.tem-btn {
+  padding-top: 13px;
+}
+
+.tem-button {
+  background-color: white;
+  border: 0cap;
+}
+
+.wth-tw {
+  flex-direction: column;
+  margin-left: 390px;
+}
+
+.wth-font {
+  font-size: 19px;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.time-font {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.des-font {
+  display: flex;
+  justify-content: flex-end;
 }

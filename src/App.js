@@ -22,7 +22,7 @@ function App() {
     navigator.geolocation.getCurrentPosition((position) => {
       let lat = position.coords.latitude;
       let lon = position.coords.longitude;
-      console.log('현재위치:', lat, lon);
+      //console.log('현재위치:', lat, lon);
       getWeatherByCurrentLocation(lat, lon);
     });
   };
@@ -33,6 +33,7 @@ function App() {
       let response = await fetch(url);
       let data = await response.json();
       console.log('data:', data);
+      console.log('data22222:', data.main.temp_min);
       setWeather(data);
       setLoading(false);
     } catch (err) {
