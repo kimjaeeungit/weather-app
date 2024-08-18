@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
 import WeatherBox from './component/WeatherBox';
 import WeatherButton from './component/WeatherButton';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 // 1. 앱이 실행되자마자 현재위치기반의 날씨가 보인다.
 // 2. 날씨정보에는 도시, 섭씨, 화씨 날씨 상태 들어간다.
@@ -13,7 +14,9 @@ import WeatherButton from './component/WeatherButton';
 function App() {
   const [weather, setWeather] = useState(null);
   const [city, setCity] = useState('');
-  const cities = ['paris', 'dublin', 'seoul', 'oxford'];
+  const [loading, setLoading] = useState(true); //data fetch할때만 true로 바꿔주기
+  const [apiError, setAPIError] = useState('');
+  const cities = ['Paris', 'Dublin', 'Seoul', 'Oxford'];
   // 배열에 값을 안주면 렌더 후에 바로 실행
   const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -24,20 +27,34 @@ function App() {
     });
   };
   const getWeatherByCurrentLocation = async (lat, lon) => {
-    let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=861351e4b65eb1adfebe021f96f31ff3&units=metric`;
-    let response = await fetch(url);
-    let data = await response.json();
-    console.log('data:', data);
-    setWeather(data);
+    try {
+      let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=861351e4b65eb1adfebe021f96f31ff3&units=metric`;
+      setLoading(true);
+      let response = await fetch(url);
+      let data = await response.json();
+      console.log('data:', data);
+      setWeather(data);
+      setLoading(false);
+    } catch (err) {
+      setAPIError(err.message);
+      setLoading(false);
+    }
   };
 
   //시티별로 데이터 가져오기
   const getWeatherByCity = async () => {
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=861351e4b65eb1adfebe021f96f31ff3&units=metric`;
-    let response = await fetch(url);
-    let data = await response.json();
-    setWeather(data);
-    console.log('Data', data);
+    try {
+      let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=861351e4b65eb1adfebe021f96f31ff3&units=metric`;
+      setLoading(true);
+      let response = await fetch(url);
+      let data = await response.json();
+      setWeather(data);
+      console.log('Data', data);
+      setLoading(false);
+    } catch (err) {
+      setAPIError(err.message);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -48,12 +65,32 @@ function App() {
     }
   }, [city]);
 
+  const handleCityChange = (city) => {
+    if (city === 'current') {
+      setCity('');
+    } else {
+      setCity(city);
+    }
+  };
+
   return (
     <div>
-      <div className="container">
-        <WeatherBox weather={weather} />
-        <WeatherButton cities={cities} setCity={setCity} />
-      </div>
+      {loading ? (
+        <div className="container">
+          <ClipLoader color="#f88c6b" loading={loading} size={150} />
+        </div>
+      ) : !apiError ? (
+        <div className="container">
+          <WeatherBox weather={weather} />
+          <WeatherButton
+            cities={cities}
+            handleCityChange={handleCityChange}
+            selectedCity={city}
+          />
+        </div>
+      ) : (
+        apiError
+      )}
     </div>
   );
 }
