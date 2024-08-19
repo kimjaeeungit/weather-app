@@ -16,14 +16,17 @@ function App() {
   const [city, setCity] = useState('');
   const [loading, setLoading] = useState(true); //data fetch할때만 true로 바꿔주기
   const [apiError, setAPIError] = useState('');
+  const [forecast, setForecast] = useState(null);
   const cities = ['Paris', 'Dublin', 'Seoul', 'Oxford'];
   // 배열에 값을 안주면 렌더 후에 바로 실행
+  //현재 위치 가져오기
   const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       let lat = position.coords.latitude;
       let lon = position.coords.longitude;
       //console.log('현재위치:', lat, lon);
       getWeatherByCurrentLocation(lat, lon);
+      getForecast(lat, lon);
     });
   };
   const getWeatherByCurrentLocation = async (lat, lon) => {
@@ -32,8 +35,6 @@ function App() {
       setLoading(true);
       let response = await fetch(url);
       let data = await response.json();
-      console.log('data:', data);
-      console.log('data22222:', data.main.temp_min);
       setWeather(data);
       setLoading(false);
     } catch (err) {
@@ -50,12 +51,25 @@ function App() {
       let response = await fetch(url);
       let data = await response.json();
       setWeather(data);
+      let location = '';
       console.log('Data', data);
+      let lat = data.coord.lat;
+      let lon = data.coord.lon;
       setLoading(false);
     } catch (err) {
       setAPIError(err.message);
       setLoading(false);
     }
+  };
+
+  //16일치 날씨 데이터 가져오기
+  const getForecast = async (lat, lon) => {
+    let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=861351e4b65eb1adfebe021f96f31ff3&units=metric`;
+    let response = await fetch(url);
+    let data = await response.json();
+    setForecast(data);
+    console.log('city', city);
+    console.log('get16DaysWeather', data);
   };
 
   useEffect(() => {
@@ -82,11 +96,12 @@ function App() {
         </div>
       ) : !apiError ? (
         <div className="container">
-          <WeatherBox weather={weather} />
+          <WeatherBox weather={weather} forecast={forecast} />
           <WeatherButton
             cities={cities}
             handleCityChange={handleCityChange}
             selectedCity={city}
+            forecast={forecast}
           />
         </div>
       ) : (

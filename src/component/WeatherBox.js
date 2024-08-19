@@ -1,8 +1,9 @@
 import React from 'react';
+import ForecastBox from './ForecastBox';
 
-const WeatherBox = ({ weather }) => {
+const WeatherBox = ({ weather, forecast, city }) => {
   console.log('weather:', weather);
-  console.log('humidity:', weather.main.humidity);
+  console.log('humidity:', weather.wind.speed);
 
   const iconCode = weather.weather[0].icon;
   const iconUrl = 'http://openweathermap.org/img/w/' + iconCode + '.png';
@@ -20,6 +21,8 @@ const WeatherBox = ({ weather }) => {
   const hours = today.getHours();
   const minutes = today.getMinutes();
   const time = `(${dayOfWeek}) ${hours}:${minutes}`;
+  const humidity = 'Humidity: ' + weather.main.humidity + '%';
+  const windSpeed = 'Wind speed: ' + weather.wind.speed + 'km/h';
 
   console.log('today', time);
   return (
@@ -46,6 +49,9 @@ const WeatherBox = ({ weather }) => {
           <div className="des-font">{weather?.weather[0].description}</div>
         </div>
       </div>
+      <div>{humidity}</div>
+      <div>{windSpeed}</div>
+      {city === '' ? <ForecastBox forecast={forecast} /> : ''}
     </div>
   );
 };

@@ -24,7 +24,10 @@ body {
 .weather-box {
   border: 3px solid white;
   /* 안에 공간 주는거 */
-  padding: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 50px;
+  padding-bottom: 20px;
   /* border-radius: 30px; */
   background-color: white;
   width: 750px;
@@ -65,7 +68,7 @@ body {
 
 .wth-tw {
   flex-direction: column;
-  margin-left: 390px;
+  margin-left: 370px;
 }
 
 .wth-font {
@@ -83,4 +86,26 @@ body {
 .des-font {
   display: flex;
   justify-content: flex-end;
+}
+
+.forecast-box {
+  border: 3px solid white;
+  /* 안에 공간 주는거 */
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 50px;
+  /* border-radius: 30px; */
+  background-color: white;
+  width: 750px;
+}
+
+.forecast-box-ul {
+  display: flex;
+  flex-direction: row;
+}
+
+.forecast-box-li {
+  width: 100px;
+  height: 100px;
+  border: 3px solid black;
 }
